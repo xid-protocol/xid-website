@@ -1,0 +1,35 @@
+{
+    "extends": "astro/tsconfigs/strict",
+    "include": [".astro/types.d.ts", "**/*"],
+    "exclude": ["dist"],
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview"
+      },
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@/assets/*": [
+          "src/assets/*"
+        ],
+        "@/components/*": [
+          "src/components/*"
+        ],
+        "@/layouts/*": [
+          "src/layouts/*"
+        ],
+        "@/icons/*": [
+          "src/icons/*"
+        ],
+        "@/i18n/*": [
+          "src/i18n/*"
+        ],
+        "@/data/*": [
+          "src/data/*"
+        ]
+      },
+      "strictNullChecks": true
+    }
+  }
