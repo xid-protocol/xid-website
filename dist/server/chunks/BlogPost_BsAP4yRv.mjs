@@ -1,5 +1,5 @@
 import { c as createComponent, d as createAstro, r as renderComponent, b as renderHead, e as addAttribute, u as unescapeHTML, f as renderSlot, g as renderTransition, a as renderTemplate } from './astro/server_Dy-IgqSj.mjs';
-import { $ as $$BaseHead, a as $$Header, c as $$FormattedDate, d as $$Icon, b as $$Footer } from './FormattedDate_YwKxvXHY.mjs';
+import { $ as $$BaseHead, a as $$Header, c as $$FormattedDate, d as $$Icon, b as $$Footer } from './FormattedDate_D1q6u5iW.mjs';
 import { g as getCollection } from './_astro_content_C77pxz3Z.mjs';
 import { $ as $$Image } from './_astro_assets_Df_OtnA3.mjs';
 /* empty css                         */
