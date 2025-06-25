@@ -20,16 +20,16 @@ services:
       retries: 3
       start_period: 40s
 
-  caddy:
+  caddy-proxy:
     image: caddy:2-alpine
-    container_name: caddy
+    container_name: caddy-proxy
     restart: unless-stopped
     ports:
       - "8089:8089"
     volumes:
       - ./conf/Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
+      - /app/xid-website/caddy_data:/data
+      - /app/xid-website/caddy_config:/config
     networks:
       - app-network
     depends_on:
@@ -39,7 +39,3 @@ services:
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  caddy_data:
-  caddy_config: 
