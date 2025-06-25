@@ -9,8 +9,12 @@ services:
     restart: unless-stopped
     ports:
       - "4321:4321"
+    expose:
+      - "4321"
     environment:
       - NODE_ENV=production
+    networks:
+      - app-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4321/"]
       interval: 30s
@@ -18,22 +22,6 @@ services:
       retries: 3
       start_period: 40s
 
-  # caddy-proxy:
-  #   image: caddy:2-alpine
-  #   container_name: caddy-proxy
-  #   restart: unless-stopped
-  #   ports:
-  #     - "8089:8089"
-  #   volumes:
-  #     - ./conf/Caddyfile:/etc/caddy/Caddyfile
-  #     - /app/xid-website/caddy_data:/data
-  #     - /app/xid-website/caddy_config:/config
-  #   networks:
-  #     - app-network
-  #   depends_on:
-  #     app:
-  #       condition: service_healthy
-
-# networks:
-#   app-network:
-#     driver: bridge
+networks:
+  app-network:
+    driver: bridge

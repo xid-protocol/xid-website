@@ -3,12 +3,6 @@ name: Deploy to Production
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   test:
@@ -36,47 +30,8 @@ jobs:
     - name: Build project
       run: pnpm build
 
-  build-and-push:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    permissions:
-      contents: read
-      packages: write
-    
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    
-    - name: Log in to Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Extract metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=sha,prefix={{branch}}-
-          type=raw,value=latest,enable={{is_default_branch}}
-    
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        file: docker/Dockerfile
-
   deploy:
-    needs: build-and-push
+    needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     
@@ -94,42 +49,48 @@ jobs:
           PROJECT_DIR=/opt/xid-website
           REPO_URL=https://github.com/xid-protocol/xid-website.git
           
-          #proxy
+          # 设置代理
           export http_proxy=http://127.0.0.1:20171
           export https_proxy=http://127.0.0.1:20171
           export no_proxy=localhost,127.0.0.1
-
-          # configure git to use proxy
           git config --global http.proxy $http_proxy || true
           git config --global https.proxy $https_proxy || true
 
-          # Clone the project on first deploy or update if it already exists
+          # 克隆或更新代码
           if [ ! -d "$PROJECT_DIR/.git" ]; then
-            echo "[deploy] Cloning repository to $PROJECT_DIR ..."
+            echo "[deploy] 克隆仓库到 $PROJECT_DIR ..."
             sudo mkdir -p $PROJECT_DIR
             sudo -E git clone --depth 1 $REPO_URL $PROJECT_DIR
+            sudo chown -R $(whoami):$(whoami) $PROJECT_DIR
           else
-            echo "[deploy] Updating existing repository ..."
+            echo "[deploy] 更新代码..."
             cd $PROJECT_DIR
-            sudo -E git fetch --all
-            sudo -E git reset --hard origin/main
+            git fetch --all
+            git reset --hard origin/main
           fi
           
-          # Move into docker directory containing docker-compose.yml
-          cd $PROJECT_DIR/docker
+          # 进入项目目录
+          cd $PROJECT_DIR
           
-          # Authenticate to GHCR and pull latest images
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker compose pull
+          # 停止现有服务
+          cd docker
+          docker compose down || true
           
-          # Restart containers
-          docker compose down
-          docker compose up -d --remove-orphans
+          # 本地构建镜像
+          echo "[deploy] 构建 Docker 镜像..."
+          docker compose build --no-cache
           
-          # Cleanup dangling images
+          # 启动服务
+          echo "[deploy] 启动服务..."
+          docker compose up -d
+          
+          # 清理无用镜像
           docker image prune -f
           
-          # Health check
+          # 健康检查
+          echo "[deploy] 等待服务启动..."
           sleep 30
           docker compose ps
-          curl -f http://localhost:8089/ || exit 1 
+          curl -f http://localhost:4321/ || exit 1
+          
+          echo "[deploy] 部署完成！" 
