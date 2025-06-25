@@ -94,6 +94,11 @@ jobs:
           PROJECT_DIR=/opt/xid-website
           REPO_URL=https://github.com/xid-protocol/xid-website.git
           
+          #proxy
+          export http_proxy=http://127.0.0.1:7890
+          export https_proxy=http://127.0.0.1:7890
+          export no_proxy=localhost,127.0.0.1
+
           # Clone the project on first deploy or update if it already exists
           if [ ! -d "$PROJECT_DIR/.git" ]; then
             echo "[deploy] Cloning repository to $PROJECT_DIR ..."
