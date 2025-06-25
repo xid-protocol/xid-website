@@ -5,6 +5,10 @@ const posts = (await getCollection("blog")).sort(
 );
 import FormattedDate from "@/components/FormattedDate.astro";
 import { Icon } from "astro-icon/components";
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 
 const bgClasses = [
   "bg-pgreen rounded-full",
@@ -19,8 +23,10 @@ const getRandomClass = () => {
 ---
 
 <section class="flex flex-col text-center gap-4 " >
-  <h2 class="text-4xl font-bold">Protocols</h2>
-  <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-20">
+  <p class="text-pblack">{t('protocols.subtitle')}</p>
+  <h2 class="text-4xl font-bold mt-16">{t('protocols.title')}</h2>
+  <p>{t('protocols.description')}</p>
+  <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-10">
     {
       posts.map((post) => {
         const randomClass = getRandomClass();

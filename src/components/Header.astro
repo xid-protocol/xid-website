@@ -1,6 +1,11 @@
 ---
 import Link from "./HeaderLink.astro";
+import LanguagePicker from "./LanguagePicker.astro";
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
 import "../styles/hamburgers.css";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <header>
@@ -14,11 +19,20 @@ import "../styles/hamburgers.css";
       </p>
     </a> -->
     <ul class="items-center md:gap-8 text-nowrap hidden md:flex">
-      <li><Link href="/" text="Home" style="primary" /></li>
-      <li><Link href="/about" text="What I do" style="secondary" /></li>
-      <li><Link href="/blog" text="My work" style="tertiary" /></li>
+      <li><Link href="/" text={t('nav.home')} style="primary" /></li>
+      <li><Link href="/about" text={t('nav.whatido')} style="secondary" /></li>
+      <li><Link href="/blog" text={t('nav.work')} style="tertiary" /></li>
     </ul>
-    <div class="md:hidden z-40">
+    
+    <!-- Language Picker for Desktop -->
+    <div class="hidden md:block">
+      <LanguagePicker />
+    </div>
+
+    <div class="md:hidden z-40 flex items-center gap-4">
+      <!-- Language Picker for Mobile -->
+      <LanguagePicker />
+      
       <button class="hamburger hamburger--elastic" type="button">
         <span class="hamburger-box">
           <span class="hamburger-inner"></span>
@@ -27,9 +41,9 @@ import "../styles/hamburgers.css";
 
       <div id="navigation" class="fixed top-0 left-0 w-full h-full bg-white transform -translate-y-full transition-transform duration-300 ease-in-out">
         <ul class="flex flex-col items-center justify-center h-full gap-8 text-nowrap">
-          <li><Link href="/" text="Home" style="primary" /></li>
-          <li><Link href="/about" text="What I do" style="secondary" /></li>
-          <li><Link href="/blog" text="My work" style="tertiary" /></li>
+          <li><Link href="/" text={t('nav.home')} style="primary" /></li>
+          <li><Link href="/about" text={t('nav.whatido')} style="secondary" /></li>
+          <li><Link href="/blog" text={t('nav.work')} style="tertiary" /></li>
         </ul>
       </div>
     </div>

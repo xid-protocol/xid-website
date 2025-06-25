@@ -17,5 +17,12 @@ export default defineConfig({
   }),
   server: {
     host: '0.0.0.0'
+  },
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "zh", "ja"],
+    routing: {
+      prefixDefaultLocale: false
+    }
   }
 });
