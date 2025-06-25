@@ -10,16 +10,30 @@ const t = useTranslations(lang);
 
 <header>
   <nav
-    class="flex container mx-auto md:p-10 px-4 py-6 items-center justify-between"
+    class="flex container mx-auto md:p-10 px-4 py-6 items-center"
   >
+    <!-- Logo替换Home文字 -->
+    <a 
+      href="/" 
+      class="flex items-center rounded-md border-black inline-block px-3 py-2 hover:border-1 hover:shadow-pblueHover transition ease-in-out mr-8"
+    >
+      <img 
+        src="/favicon/logo.svg" 
+        alt="XID Protocol Logo" 
+        class="h-20 md:h-100 w-auto"
+      />
+    </a>
+    
     <!-- <a class="flex items-center gap-2" href="/">
       <p class="font-kablamo text-ppink text-4xl md:text-5xl">S</p>
       <p class="pt-2 md:text-lg font-semibold flex">
         <span class="hidden md:block">Joaquín</span> Sorolla
       </p>
     </a> -->
-    <ul class="items-center md:gap-8 text-nowrap hidden md:flex">
-      <li><Link href="/" text={t('nav.home')} style="primary" /></li>
+    
+    <!-- 导航链接 -->
+    <ul class="items-center md:gap-8 text-nowrap hidden md:flex flex-1">
+      <!-- <li><Link href="/" text={t('nav.home')} style="primary" /></li> -->
       <li><Link href="/about" text={t('nav.whatido')} style="secondary" /></li>
       <li><Link href="/blog" text={t('nav.work')} style="tertiary" /></li>
     </ul>
@@ -29,7 +43,7 @@ const t = useTranslations(lang);
       <LanguagePicker />
     </div>
 
-    <div class="md:hidden z-40 flex items-center gap-4">
+    <div class="md:hidden z-40 flex items-center gap-4 ml-auto">
       <!-- Language Picker for Mobile -->
       <LanguagePicker />
       
@@ -41,7 +55,7 @@ const t = useTranslations(lang);
 
       <div id="navigation" class="fixed top-0 left-0 w-full h-full bg-white transform -translate-y-full transition-transform duration-300 ease-in-out">
         <ul class="flex flex-col items-center justify-center h-full gap-8 text-nowrap">
-          <li><Link href="/" text={t('nav.home')} style="primary" /></li>
+          <!-- <li><Link href="/" text={t('nav.home')} style="primary" /></li> -->
           <li><Link href="/about" text={t('nav.whatido')} style="secondary" /></li>
           <li><Link href="/blog" text={t('nav.work')} style="tertiary" /></li>
         </ul>

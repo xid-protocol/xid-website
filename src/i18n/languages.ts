@@ -37,7 +37,7 @@ export const ui = {
     'nav.home': 'ホーム',
     'nav.whatido': '私の仕事',
     'nav.work': '作品',
-    'hero.title': 'XIDプロトコル',
+    'hero.title': 'XID-Protocol',
     'hero.subtitle': 'エンタープライズグレード、無限スケーラブル、分散型アイデンティティデータプロトコル',
     'hero.description1': '企業に分散するデータを統一・標準化し、データの価値を引き出します。',
     'hero.description2': 'チーム内、チーム間、外部パートナーとの統一された標準でデータ連携を実現します。',
