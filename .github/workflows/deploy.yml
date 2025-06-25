@@ -99,16 +99,20 @@ jobs:
           export https_proxy=http://127.0.0.1:20171
           export no_proxy=localhost,127.0.0.1
 
+          # configure git to use proxy
+          git config --global http.proxy $http_proxy || true
+          git config --global https.proxy $https_proxy || true
+
           # Clone the project on first deploy or update if it already exists
           if [ ! -d "$PROJECT_DIR/.git" ]; then
             echo "[deploy] Cloning repository to $PROJECT_DIR ..."
             sudo mkdir -p $PROJECT_DIR
-            sudo git clone --depth 1 $REPO_URL $PROJECT_DIR
+            sudo -E git clone --depth 1 $REPO_URL $PROJECT_DIR
           else
             echo "[deploy] Updating existing repository ..."
             cd $PROJECT_DIR
-            sudo git fetch --all
-            sudo git reset --hard origin/main
+            sudo -E git fetch --all
+            sudo -E git reset --hard origin/main
           fi
           
           # Move into docker directory containing docker-compose.yml
